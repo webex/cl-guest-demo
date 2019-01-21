@@ -4,10 +4,15 @@
     "description": "Webex Teams Guest Demo",
     "main": "server.js",
     "author": "Dorin Ciobanu",
+    "scripts": {
+        "start": "node server.js"
+    },
     "dependencies": {
-        "express": "~4.7.2",
         "body-parser": "~1.5.2",
+        "express": "~4.7.2",
+        "jsonwebtoken": "^8.4.0",
         "nocache": "^2.0.0",
+        "request": "^2.88.0",
         "request-promise": "^4.2.2"
     }
 }

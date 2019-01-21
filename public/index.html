@@ -42,7 +42,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "https://api.guest.training/v1/guest",
+                url: "api/v1/guest",
                 data: JSON.stringify({sub: id, name: name}),
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -97,6 +97,6 @@
         </div>
     </div>
 
-    <div id="widget-box" style="width: 500px; height: 500px; z-index: 10"/>
+    <div id="widget-box" style="width: 50%; height: 75%; z-index: 10"/>
 </body>
 </html>
