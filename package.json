@@ -1,0 +1,13 @@
+{
+    "name": "guest-demo",
+    "version": "0.0.0",
+    "description": "Webex Teams Guest Demo",
+    "main": "server.js",
+    "author": "Dorin Ciobanu",
+    "dependencies": {
+        "express": "~4.7.2",
+        "body-parser": "~1.5.2",
+        "nocache": "^2.0.0",
+        "request-promise": "^4.2.2"
+    }
+}

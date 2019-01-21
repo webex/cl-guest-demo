@@ -1,0 +1,102 @@
+<html>
+<head>
+    <title>Guest Demo</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://code.s4d.io/widget-space/production/main.css">
+    <script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
+
+    <style>
+        #widget-box {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        $(window).on('load', function(){
+            $('#infoModal').modal('show');
+
+            $('#infoModal').on('hide.bs.modal', function (event) {
+                var name = $('#guest-name').val();
+                var id = $('#guest-id').val();
+                guestJoin(id, name);
+            });
+        });
+
+        function guestJoin(id, name) {
+
+            if (!id) {
+                id = Math.floor(Math.random() * Math.floor(10000));
+            }
+
+            if (!name) {
+                name = 'Guest ' + id;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "https://api.guest.training/v1/guest",
+                data: JSON.stringify({sub: id, name: name}),
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json"
+            }).then(function (data, status, jqXHR) {
+                console.log('Guest', data);
+                openWidget(data.roomId, data.token);
+            });
+        };
+
+        function openWidget(roomId, token) {
+            var widgetEl = document.getElementById('widget-box');
+
+            ciscospark.widget(widgetEl).spaceWidget({
+                guestToken: token,
+                destinationId: roomId,
+                destinationType: 'spaceId',
+                activities: {"files":true,"meet":true,"message":true,"people":true},
+                initialActivity: 'message',
+                secondaryActivitiesFullWidth: false
+            });
+        }
+
+    </script>
+
+    <iframe src="https://player.twitch.tv/?channel=redbull" frameborder="0" allowfullscreen="true" scrolling="no" width="80%" height="80%" ></iframe>
+
+    <div>
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-name" id="infoModalLabel">Your details</h3>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="guest-name" class="col-form-label">Guest Name:</label>
+                            <input type="text" class="form-control" id="guest-name" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="guest-id" class="col-form-label">Guest ID:</label>
+                            <input type="text" class="form-control" id="guest-id" placeholder="Optional">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Join the conversation</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="widget-box" style="width: 500px; height: 500px; z-index: 10"/>
+</body>
+</html>
