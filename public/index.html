@@ -11,26 +11,108 @@
     <script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
 
     <style>
-        #widget-box {
+        #box-open {
             position: fixed;
             bottom: 0;
             right: 0;
+            width: 50%; 
+            height: 75%; 
+            margin-right: 20px;
+            margin-bottom: 10px;
+            z-index: 10;
+            background-color: lightsteelblue;
+            text-align: right;
+            display: none;
         }
+
+        #widget-box-header {
+            height: 26px;
+        }
+
+        #widget-box {
+            background-color: white;
+            height: calc(100% - 32px);
+            text-align: left;
+        }
+
+        #box-minimized {
+            position: fixed;
+            bottom: 4px;
+            right: 4px;
+            width: 100px;
+            height: 32px;
+            padding: 2px;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            background-color:lightsteelblue;
+            border-style: solid;
+            border-color:slategrey;
+            border-width: 1px;
+            text-align: right;
+            display: none;
+        }
+        
+        #btnMax {
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+        }
+
+        #btnMin {
+            width: 22px;
+            height: 22px;
+            margin: 2px;
+            font-size: 10px;
+        }
+
+        #load-status {
+            width: 400px;
+            height: 100px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-style: solid;
+            border-color:slategrey;
+            border-width: 1px;
+            padding-top: 30;
+            text-align: center;
+            display: none;
+        }
+
+        body {
+            padding-left: 20px;
+        }
+
+        
     </style>
 </head>
 <body>
     <script>
         $(window).on('load', function(){
+
+            $('#btnMin').on('click', function (event) {
+                $('#box-open').hide();
+                $('#box-minimized').show();
+            });
+
+            $('#btnMax').on('click', function (event) {
+                $('#box-open').show();
+                $('#box-minimized').hide();
+            });
+
             $('#infoModal').modal('show');
 
             $('#infoModal').on('hide.bs.modal', function (event) {
                 var name = $('#guest-name').val();
                 var id = $('#guest-id').val();
                 guestJoin(id, name);
-            });
+            });            
         });
 
         function guestJoin(id, name) {
+            $('#load-status').show();
 
             if (!id) {
                 id = Math.floor(Math.random() * Math.floor(10000));
@@ -56,6 +138,9 @@
         function openWidget(roomId, token) {
             var widgetEl = document.getElementById('widget-box');
 
+            $('#box-open').show();
+            $('#load-status').hide();
+
             ciscospark.widget(widgetEl).spaceWidget({
                 guestToken: token,
                 destinationId: roomId,
@@ -65,10 +150,29 @@
                 secondaryActivitiesFullWidth: false
             });
         }
-
     </script>
 
-    <iframe src="https://player.twitch.tv/?channel=redbull" frameborder="0" allowfullscreen="true" scrolling="no" width="80%" height="80%" ></iframe>
+    <div>
+        <h1>Live Event</h1>
+        <iframe src="https://player.twitch.tv/?channel=redbull" frameborder="0" allowfullscreen="true" scrolling="no" width="80%" height="80%" ></iframe>
+    </div>
+
+    <div id="load-status">
+        <h2>Logging in Guest</h2>
+        Please wait
+    </div>
+
+    <div id="box-minimized">
+        <button id="btnMax">^</button> 
+    </div>
+
+    <div id="box-open">
+        <div id="widget-box-header">
+            <button id="btnMin">V</button> 
+        </div>
+        <div id="widget-box">
+        </div>
+    </div>
 
     <div>
         <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -97,6 +201,5 @@
         </div>
     </div>
 
-    <div id="widget-box" style="width: 50%; height: 75%; z-index: 10"/>
 </body>
 </html>
