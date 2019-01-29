@@ -7,7 +7,7 @@ Viewwers of a Live TV event can join a group chat and group video call.
 1. Clone this repository & install all the dependencies
 
     ```sh
-    git clone https://github.com/dciobanu/cl-guest-demo.git
+    git clone https://github.com/webex/cl-guest-demo.git
     cd cl-guest-demo
     npm install
     ```
